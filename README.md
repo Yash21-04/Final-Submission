@@ -1,111 +1,186 @@
-# Driver Drowsiness Detection using AI, OpenCV & Streamlit
+# Driver Drowsiness Detection 😴 🚫 🚗
 
+[![](https://img.shields.io/github/license/sourcerer-io/hall-of-fame.svg?colorB=ff0000)](https://github.com/Yash21-04/Final-Submission/blob/master/LICENSE.txt)  [![](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://www.python.org/)
 
+A real-time computer vision system that automatically detects driver drowsiness using facial landmarks and Eye Aspect Ratio (EAR) analysis. The system triggers an alert when drowsiness is detected, helping prevent accidents caused by fatigue.
 
-This repository contains materials for a lane / driver drowsiness detection study. It includes a Jupyter notebook that demonstrates data download, preprocessing, model training/evaluation, and a small Streamlit app for interactive demos.
+## 🎯 Applications
 
-Repository layout
-- `lane_drowsiness_pipeline.ipynb` — Main Jupyter notebook with experiments, data download steps, and model code.
-- `streamlit_app.py` — Streamlit demo app to run the pipeline or visualize results interactively.
-- `a.py` — auxiliary script (inspect before running).
+This system is designed for:
+- Drivers who operate vehicles for extended periods
+- Commercial vehicle operators (trucks, buses, taxis)
+- Fleet management systems
+- Personal vehicle safety enhancement
+- Research in driver safety and fatigue detection
 
-Highlights
-- Combines classical computer-vision (Eye Aspect Ratio with facial landmarks) and deep-learning (CNN) approaches.
-- Notebook contains example training/evaluation code and visualization cells.
-- Streamlit app for local interactive demos.
+## ✨ Features
 
-Important dependencies
-- Python 3.8+ recommended
-- jupyterlab / notebook
-- numpy
-- opencv-python
-- imutils
-- scipy
-- scikit-learn
-- matplotlib
-- tensorflow (if you use the Keras models in the notebook)
-- streamlit (for `streamlit_app.py`)
-- dlib (used for facial landmarks — see notes below)
+- **Real-time Detection**: Processes video stream in real-time from webcam
+- **Eye Aspect Ratio (EAR)**: Uses scientifically proven EAR metric for drowsiness detection
+- **Visual Feedback**: Draws eye contours for visual confirmation
+- **Alert System**: Displays warning messages when drowsiness is detected
+- **Lightweight**: Efficient algorithm suitable for resource-constrained environments
+- **Customizable Thresholds**: Adjustable sensitivity parameters
 
-Notes about installing `dlib` on Windows
-- `dlib` frequently needs a C++ build toolchain or a prebuilt wheel on Windows. The easiest approach is to use conda and install from conda-forge:
+## 🚀 Installation
 
-	```powershell
-	conda install -c conda-forge dlib
-	```
+### Prerequisites
 
-- If you don't have conda, a pip wheel may exist for your Python version; otherwise pip install may fail and require Visual Studio Build Tools.
+- Python 3.7 or higher
+- Webcam/Camera
+- Virtual environment (recommended)
 
-Recommended setup (PowerShell on Windows)
+### Step 1: Clone the Repository
 
-1) Create and activate a virtual environment (venv) or use conda (recommended for `dlib`):
-
-```powershell
-# Using venv
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-
-# Upgrade pip and install most packages
-pip install -U pip
-pip install jupyterlab numpy opencv-python imutils scipy scikit-learn matplotlib streamlit
-
-# Optional: TensorFlow (CPU)
-pip install tensorflow
-
-# If you prefer conda (recommended when you need dlib):
-# conda create -n lane_env python=3.10 -y
-# conda activate lane_env
-# conda install -c conda-forge dlib
-# pip install jupyterlab numpy opencv-python imutils scipy scikit-learn matplotlib streamlit tensorflow
+```bash
+git clone https://github.com/Yash21-04/Final-Submission.git
+cd Final-Submission
 ```
 
-2) Run the notebook
+### Step 2: Create Virtual Environment
 
-```powershell
-jupyter lab
-# or
-jupyter notebook
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+
+# On macOS/Linux:
+source venv/bin/activate
 ```
 
-Notes for notebooks
-- Use the IPython pip magic inside notebook cells when installing from a cell: `%pip install package` so the install targets the running kernel environment.
-- Some notebook static analyzers flag `!` magics and `get_ipython()` calls; these are normal in Jupyter notebooks and work at runtime.
+### Step 3: Install Dependencies
 
-3) Run the Streamlit app
-
-```powershell
-# From the repository root
-pip install streamlit
-streamlit run streamlit_app.py
+```bash
+pip install opencv-python
+pip install imutils
+pip install dlib
+pip install scipy
+pip install numpy
 ```
 
-Troubleshooting
-- If VS Code shows imports as "could not be resolved", ensure the editor/language server is using the same Python environment as your runtime kernel or virtualenv.
-- If `dlib` pip install fails on Windows, prefer installing via conda-forge. If you must build from source, install Visual Studio Build Tools and CMake.
+### Step 4: Download Shape Predictor Model
 
-Next steps / suggestions
-- Replace `!pip install` notebook magics with `%pip install` to avoid kernel-environment mismatches.
-- Add a `requirements.txt` or `environment.yml` for reproducible setup.
-- Add simple unit tests or an integration script to validate the Streamlit app and notebook examples.
+Download the pre-trained facial landmark detector:
 
-Repository hygiene
-- It's best not to commit Python bytecode or the __pycache__ directory. These are auto-generated and platform/Python-version specific.
-- Add the following to `.gitignore` to prevent accidental commits of compiled files:
+```bash
+# Create models directory
+mkdir models
 
-```powershell
-Add-Content -Path .gitignore -Value "__pycache__/"
-Add-Content -Path .gitignore -Value "*.pyc"
+# Download shape predictor (68 face landmarks)
+# Download from: http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
+# Extract and place in the models/ directory
 ```
 
-If `__pycache__` was previously committed, remove tracked compiled files with:
+## 📦 Dependencies
 
-```powershell
-git rm --cached -r __pycache__ || Write-Output 'No tracked __pycache__'
-git add .gitignore
-git commit -m "chore: ignore Python bytecode and __pycache__"
+```python
+- opencv-python (cv2) - Computer vision and image processing
+- imutils - Image processing helper functions
+- dlib - Facial landmark detection
+- scipy - Scientific computing (distance calculations)
+- numpy - Numerical operations
 ```
 
-License
-- Add your preferred license here (e.g., MIT) if you plan to publish the repository.
+## 💻 Usage
 
-Contact
+### Basic Execution
+
+```bash
+python Drowsiness_Detection.py
+```
+
+### Controls
+
+- **Press 'q'**: Quit the application
+- The system will automatically start detecting faces and monitoring eye aspect ratio
+
+### Configuration Parameters
+
+You can modify these parameters in `Drowsiness_Detection.py`:
+
+```python
+thresh = 0.25        # EAR threshold for drowsiness (lower = more sensitive)
+frame_check = 20     # Consecutive frames before triggering alert
+```
+
+## 🧮 Algorithm Details
+
+### Detection Pipeline
+
+1. **Face Detection**: Uses dlib's frontal face detector to locate faces in the frame
+2. **Landmark Prediction**: Identifies 68 facial landmarks using shape predictor
+3. **Eye Extraction**: Extracts coordinates for left and right eyes
+4. **EAR Calculation**: Computes Eye Aspect Ratio for both eyes
+5. **Drowsiness Check**: Monitors EAR over consecutive frames
+6. **Alert Trigger**: Displays alert if EAR < threshold for specified frames
+
+### Key Parameters
+
+- **EAR Threshold**: `0.25` - Eyes are considered closed below this value
+- **Frame Check**: `20` frames - Number of consecutive frames required to trigger alert
+- **Facial Landmarks**: 68-point model from dlib
+
+### Algorithm Flow
+
+```
+Capture Frame
+    ↓
+Convert to Grayscale
+    ↓
+Detect Face
+    ↓
+Predict Facial Landmarks
+    ↓
+Extract Eye Coordinates
+    ↓
+Calculate EAR
+    ↓
+EAR < Threshold? → Yes → Increment Counter
+    ↓                        ↓
+    No                    Counter >= 20? → Yes → ALERT!
+    ↓                        ↓
+Reset Counter              No → Continue
+    ↓
+Display Frame
+```
+
+## 📁 Project Structure
+
+```
+Final-Submission/
+│
+├── Drowsiness_Detection.py    # Main detection script
+├── models/
+│   └── shape_predictor_68_face_landmarks.dat  # Facial landmark model
+├── readme.md                   # Project documentation
+├── venv/                       # Virtual environment (not in repo)
+└── requirements.txt            # Python dependencies
+```
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 📌 Citation
+
+If you use this project in your research or work, please cite:
+
+```bibtex
+@misc{driver_drowsiness_detection,
+  author = {Yash21-04},
+  title = {Driver Drowsiness Detection},
+  year = {2025},
+  publisher = {GitHub},
+  journal = {GitHub Repository},
+  howpublished = {\url{https://github.com/Yash21-04/Final-Submission}}
+}
+```
+
+---
+
+⭐ If you find this project useful, please consider giving it a star!
+
+💡 **Stay Alert, Stay Safe!** 🚗
